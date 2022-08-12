@@ -77,7 +77,6 @@ const SideBar = () => {
 
   useEffect(() => {
     !pages[0].position && setPages(createPositionWidth());
-    console.log(createPositionWidth());
   }, [pages]);
 
   useEffect(() => {
@@ -85,13 +84,10 @@ const SideBar = () => {
       page => page.link === router.pathname.split("/")[1]
     );
     activePage && setActive(activePage);
-  }, [router.asPath]);
+  }, [router.pathname]);
 
   return (
-    <div className="bg-[#0E0D21] w-[129px] h-full relative">
-      {active ? (
-        <SideTraveller active={active}  />
-      ) : null}
+    <div className="bg-[#0E0D21] w-[129px] h-full fixed">
       <div className="flex justify-center pt-10 pb-36">
         <Icon name="Cell" />
       </div>
@@ -101,7 +97,7 @@ const SideBar = () => {
             <div
               id={`sidebar-${index}-${page.link}`}
               onClick={() => {
-                setActive(page)
+                active && active.name !== page.name ? setActive(page) : null
               }}
               className={`flex pl-2 py-2 flex-col justify-center items-center relative z-10 ${
                 active && active.name === page.name ? "stroke-[#0E0D21]" : ""
@@ -121,6 +117,9 @@ const SideBar = () => {
             </div>
           </CustomLink>
         ))}
+      {active ? (
+        <SideTraveller active={active}  />
+      ) : null}
       </div>
     </div>
   );
