@@ -34,7 +34,6 @@ const SideTraveller = ({ active }: Props) => {
         className="bg-[#F2F2F2] absolute transition-all rounded-l-[26px] right-0 z-0 side-tab w-[95%]"
         style={{
           top: `${active && active.position && active.position}px`,
-          // width: `${active && active.width}px`,
           height: `60px`,
         }}
       />
