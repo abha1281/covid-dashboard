@@ -8,11 +8,12 @@ type Props = {
   children: React.ReactNode;
 };
 
-const urlsUsingSecondarySidebar = ["/overview"];
+const urlsUsingSecondarySidebar = ["/overview", "/symptoms"];
+const urlsWithWhiteBg = ["/symptoms"];
 
 const MainTemplate = ({ children }: Props) => {
   const router = useRouter();
-  const { hasSecondarySidebar, handleChangeLayout } = useChangeLayout();
+  const { handleChangeLayout, backgroundColor, handleBackgroundColor } = useChangeLayout();
   const [sidePanelWidth, setSidePanelWidth] = useState(0);
 
   const getWidthOfSideTemplate = () => {
@@ -21,16 +22,27 @@ const MainTemplate = ({ children }: Props) => {
   };
 
   useEffect(() => {
-    getWidthOfSideTemplate();
-  }, [hasSecondarySidebar]);
+    const matchedUrlSideBar = urlsUsingSecondarySidebar.find(
+      url => url === router.pathname
+    );
 
-  useEffect(() => {
-    urlsUsingSecondarySidebar.map(url => {
-      if (router.pathname !== url) {
-        handleChangeLayout(false);
-      }
-    });
-  }, [router.asPath]);
+    const matchedUrlWhiteBg = urlsWithWhiteBg.find(
+      url => url === router.pathname
+    );
+
+    matchedUrlWhiteBg && matchedUrlWhiteBg.length > 0
+      ? handleBackgroundColor("#FFFFFF")
+      : handleBackgroundColor("#F2F2F2");
+
+    
+    if (matchedUrlSideBar && matchedUrlSideBar.length > 0) {
+      handleChangeLayout(true);
+      getWidthOfSideTemplate();
+    } else {
+      handleChangeLayout(false);
+      setSidePanelWidth(0);
+    }
+  }, [router.pathname]);
 
   return (
     <>
@@ -38,11 +50,10 @@ const MainTemplate = ({ children }: Props) => {
       <div className="flex bg-[#0E0D21]">
         <SideBar />
         <div
-          className="rounded-l-[26px] bg-gray-100 px-14 py-12 h-screen transition-all ml-[129px]"
+          className={`rounded-l-[26px] w-full px-14 py-12 min-h-screen transition-all ml-[129px]`}
           style={{
-            width: hasSecondarySidebar
-              ? `calc(100% - ${sidePanelWidth + 129}px)`
-              : "100%",
+            marginRight: `${sidePanelWidth}px`,
+            backgroundColor: backgroundColor,
           }}
         >
           {children}

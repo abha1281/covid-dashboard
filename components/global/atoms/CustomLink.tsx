@@ -1,14 +1,17 @@
 import Link from "next/link";
 
 type Props = {
-  link: string
+  link: string;
   children: React.ReactNode;
+  className?: string;
 };
 
-const CustomLink = ({ link, children }: Props) => {
+const CustomLink = ({ link, children, className = "" }: Props) => {
   return (
     <Link href={link}>
-      <a>{children}</a>
+      <a>
+        <div className={className}>{children}</div>
+      </a>
     </Link>
   );
 };

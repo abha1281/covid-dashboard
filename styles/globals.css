@@ -6,3 +6,7 @@ html {
   scroll-behavior: smooth;
   font-family: 'Poppins', sans-serif;
 }
+
+textarea:focus, input:focus{
+  outline: solid 1px #817C9B;
+}
